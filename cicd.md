@@ -12,6 +12,7 @@ choco install kubernetes-helm -y
 
 - Setup jenkins
 ```powershell
+kubectl config use-context docker-desktop # If Minikube has been previously installed
 kubectl create namespace jenkins
 kubectl get namespaces
 helm repo add jenkinsci https://charts.jenkins.io
@@ -42,3 +43,18 @@ kubectl get ingress -n gitlab -lrelease=gitlab
 kubectl get all -n gitlab
 ```
 
+# Proget
+
+```
+kubectl create namespace proget
+helm install proget -n proget  ./proget
+
+
+kubectl exec -n proget --stdin --tty pod/db-69ff954c54-622cr -- /bin/bash
+
+/opt/mssql-tools/bin/sqlcmd \
+   -S localhost -U SA -P '<YourStrong!Passw0rd>' \
+   -Q 'CREATE DATABASE [ProGet] COLLATE SQL_Latin1_General_CP1_CI_AS'
+
+<YourStrong!Passw0rd>
+```

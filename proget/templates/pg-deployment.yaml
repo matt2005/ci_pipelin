@@ -10,6 +10,7 @@ metadata:
   name: pg
 spec:
   replicas: 1
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       io.kompose.service: pg
@@ -27,9 +28,11 @@ spec:
     spec:
       containers:
         - env:
+            - name: SA_PASSWORD
+              value: "1Passw0rd"
             - name: SQL_CONNECTION_STRING
-              value: Data Source=proget-sql; Initial Catalog=ProGet; User ID=sa; Password=<YourStrong!Passw0rd>
-          image: proget.inedo.com/productimages/inedo/proget:<ProGet Version>
+              value: Data Source=proget-sql; Initial Catalog=ProGet; User ID=sa; Password=${SA_PASSWORD}
+          image: proget.inedo.com/productimages/inedo/progetcore:5.3.11
           name: proget
           ports:
             - containerPort: 80

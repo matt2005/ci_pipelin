@@ -1,3 +1,31 @@
+{{- if .Values.nodeport -}}
+{{- if eq .Values.nodeport.enabled true -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  type: NodePort
+  ports:
+    - name: "1433"
+      port: 1433
+      targetPort: 1433
+      nodePort: 31433
+      protocol: TCP
+  selector:
+    io.kompose.service: db
+status:
+  loadBalancer: {}
+{{- end -}}
+{{- else -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,3 +45,4 @@ spec:
     io.kompose.service: db
 status:
   loadBalancer: {}
+{{- end -}}

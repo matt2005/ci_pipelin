@@ -1,3 +1,31 @@
+{{- if .Values.nodeport -}}
+{{- if eq .Values.nodeport.enabled true -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pg
+  name: pg
+spec:
+  type: NodePort
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+      protocol: TCP
+  selector:
+    io.kompose.service: pg
+status:
+  loadBalancer: {}
+{{- end -}}
+{{- else -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,3 +45,4 @@ spec:
     io.kompose.service: pg
 status:
   loadBalancer: {}
+{{- end -}}

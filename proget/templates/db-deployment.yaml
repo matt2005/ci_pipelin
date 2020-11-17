@@ -10,6 +10,7 @@ metadata:
   name: db
 spec:
   replicas: 1
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       io.kompose.service: db
@@ -30,10 +31,11 @@ spec:
               value: "Y"
             - name: MSSQL_PID
               value: Express
-            - name: MSSQL_SA_PASSWORD
-              value: <YourStrong!Passw0rd>
+            - name: SA_PASSWORD
+              value: "1Passw0rd"
           image: mcr.microsoft.com/mssql/server:2019-latest
           name: proget-sql
+          servername: proget-sql
           ports:
             - containerPort: 1433
           resources: {}
