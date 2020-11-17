@@ -46,6 +46,7 @@ kubectl get all -n gitlab
 # Proget
 
 ```
+kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl create namespace proget
 helm install proget -n proget  ./proget
 
@@ -54,7 +55,7 @@ kubectl exec -n proget --stdin --tty pod/db-69ff954c54-622cr -- /bin/bash
 
 /opt/mssql-tools/bin/sqlcmd \
    -S localhost -U SA -P '<YourStrong!Passw0rd>' \
-   -Q 'CREATE DATABASE [ProGet] COLLATE SQL_Latin1_General_CP1_CI_AS'
+   -Q 'IF NOT EXISTS (Select Name from sys.databases where name = 'ProGet') BEGIN CREATE DATABASE [ProGet] COLLATE SQL_Latin1_General_CP1_CI_AS END'
 
 <YourStrong!Passw0rd>
 ```
